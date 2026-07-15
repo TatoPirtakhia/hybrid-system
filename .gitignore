@@ -2,6 +2,7 @@ node_modules/
 .expo/
 dist/
 dist-export/
+dist-export-ios/
 coverage/
 *.log
 apps/mobile/android/

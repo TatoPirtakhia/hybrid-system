@@ -1,10 +1,11 @@
 import { Elm327Client, SimulatorTransport, parseElmResponse } from '@prius/elm327';
 import { standardPids, decodeStandardPid, parseSupportedPidBitmap, type ExecutableTelemetryDefinition } from '@prius/vehicle-profiles';
-import type { ObdTransport } from '@prius/obd-core';
+import type { DiscoveredAdapter, ObdTransport } from '@prius/obd-core';
 import type { TelemetrySample } from '@prius/shared';
 import { TripAggregator, parseMode03Dtcs } from '@prius/telemetry';
 import { appendTripSampleBatch, saveDiagnosticScan, upsertTrip } from './database';
 import { useConnectionStore, useTelemetryStore, useTripStore } from './stores/app';
+import { AndroidClassicTransport, BleTransport } from './transports';
 
 let client: Elm327Client | undefined; let polling = false;
 const timers = new Set<ReturnType<typeof setTimeout>>();
@@ -12,10 +13,23 @@ let trip: { id: string; aggregator: TripAggregator; batch: TelemetrySample[]; la
 
 export const connectSimulator = async (): Promise<void> => connectTransport(new SimulatorTransport());
 
-export const connectTransport = async (transport: ObdTransport): Promise<void> => {
+let scannedTransport: ObdTransport | undefined;
+
+export const scanBluetoothAdapters = async (type: 'BLE' | 'ANDROID_CLASSIC'): Promise<DiscoveredAdapter[]> => {
+  scannedTransport = type === 'BLE' ? new BleTransport() : new AndroidClassicTransport();
+  return scannedTransport.scan();
+};
+
+export const connectBluetoothAdapter = async (adapter: DiscoveredAdapter): Promise<void> => {
+  if (!scannedTransport) throw new Error('Scan for adapters first');
+  const transport = scannedTransport; scannedTransport = undefined;
+  await connectTransport(transport, adapter);
+};
+
+export const connectTransport = async (transport: ObdTransport, selectedAdapter?: DiscoveredAdapter): Promise<void> => {
   await disconnect(); useConnectionStore.getState().set({ status: 'CONNECTING', transport: transport.type, error: undefined });
   try {
-    client = new Elm327Client(transport); const adapters = await client.scan(); const adapter = adapters[0]; if (!adapter) throw new Error('No adapter found');
+    client = new Elm327Client(transport); const adapter = selectedAdapter ?? (await client.scan())[0]; if (!adapter) throw new Error('No adapter found');
     await client.connect(adapter); useConnectionStore.getState().set({ status: 'READY' });
     const supported = await discoverSupportedPids(client); polling = true;
     for (const definition of standardPids.filter((pid) => supported.has(pid.pid))) schedulePoll(definition);
