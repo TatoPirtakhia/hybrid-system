@@ -1,0 +1,12 @@
+plugins { id 'com.android.library'; id 'expo-module-gradle-plugin' }
+group = 'app.priuscompanion.androidclassicspp'
+version = '0.1.0'
+android {
+  namespace 'expo.modules.androidclassicspp'
+  defaultConfig {
+    minSdkVersion 24
+    targetSdkVersion 36
+    versionCode 1
+    versionName '0.1.0'
+  }
+}

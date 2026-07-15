@@ -1,0 +1,23 @@
+{
+  "name": "prius-companion",
+  "private": true,
+  "packageManager": "pnpm@11.10.0",
+  "scripts": {
+    "dev": "pnpm --filter @prius/mobile start",
+    "android": "pnpm --filter @prius/mobile android",
+    "ios": "pnpm --filter @prius/mobile ios",
+    "typecheck": "pnpm -r typecheck",
+    "test": "jest --runInBand",
+    "validate:profiles": "pnpm --filter @prius/profile-validator start",
+    "replay": "pnpm --filter @prius/log-replayer start"
+  },
+  "devDependencies": {
+    "@types/jest": "30.0.0",
+    "@types/node": "24.10.1",
+    "@swc/core": "1.15.43",
+    "@swc/jest": "0.2.39",
+    "jest": "30.4.2",
+    "tsx": "4.21.0",
+    "typescript": "6.0.3"
+  }
+}

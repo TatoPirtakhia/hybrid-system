@@ -1,0 +1,29 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="expo.modules.androidclassicspp" >
+4
+5    <uses-sdk android:minSdkVersion="24" />
+6
+7    <uses-permission
+7-->C:\Users\tpirtakhia\Documents\Codex\2026-07-15\files-mentioned-by-the-user-technical\outputs\prius-companion\apps\mobile\modules\android-classic-spp\android\src\main\AndroidManifest.xml:2:3-93
+8        android:name="android.permission.BLUETOOTH"
+8-->C:\Users\tpirtakhia\Documents\Codex\2026-07-15\files-mentioned-by-the-user-technical\outputs\prius-companion\apps\mobile\modules\android-classic-spp\android\src\main\AndroidManifest.xml:2:20-63
+9        android:maxSdkVersion="30" />
+9-->C:\Users\tpirtakhia\Documents\Codex\2026-07-15\files-mentioned-by-the-user-technical\outputs\prius-companion\apps\mobile\modules\android-classic-spp\android\src\main\AndroidManifest.xml:2:64-90
+10    <uses-permission
+10-->C:\Users\tpirtakhia\Documents\Codex\2026-07-15\files-mentioned-by-the-user-technical\outputs\prius-companion\apps\mobile\modules\android-classic-spp\android\src\main\AndroidManifest.xml:3:3-99
+11        android:name="android.permission.BLUETOOTH_ADMIN"
+11-->C:\Users\tpirtakhia\Documents\Codex\2026-07-15\files-mentioned-by-the-user-technical\outputs\prius-companion\apps\mobile\modules\android-classic-spp\android\src\main\AndroidManifest.xml:3:20-69
+12        android:maxSdkVersion="30" />
+12-->C:\Users\tpirtakhia\Documents\Codex\2026-07-15\files-mentioned-by-the-user-technical\outputs\prius-companion\apps\mobile\modules\android-classic-spp\android\src\main\AndroidManifest.xml:3:70-96
+13    <uses-permission
+13-->C:\Users\tpirtakhia\Documents\Codex\2026-07-15\files-mentioned-by-the-user-technical\outputs\prius-companion\apps\mobile\modules\android-classic-spp\android\src\main\AndroidManifest.xml:4:3-118
+14        android:name="android.permission.BLUETOOTH_SCAN"
+14-->C:\Users\tpirtakhia\Documents\Codex\2026-07-15\files-mentioned-by-the-user-technical\outputs\prius-companion\apps\mobile\modules\android-classic-spp\android\src\main\AndroidManifest.xml:4:20-68
+15        android:usesPermissionFlags="neverForLocation" />
+15-->C:\Users\tpirtakhia\Documents\Codex\2026-07-15\files-mentioned-by-the-user-technical\outputs\prius-companion\apps\mobile\modules\android-classic-spp\android\src\main\AndroidManifest.xml:4:69-115
+16    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+16-->C:\Users\tpirtakhia\Documents\Codex\2026-07-15\files-mentioned-by-the-user-technical\outputs\prius-companion\apps\mobile\modules\android-classic-spp\android\src\main\AndroidManifest.xml:5:3-74
+16-->C:\Users\tpirtakhia\Documents\Codex\2026-07-15\files-mentioned-by-the-user-technical\outputs\prius-companion\apps\mobile\modules\android-classic-spp\android\src\main\AndroidManifest.xml:5:20-71
+17
+18</manifest>

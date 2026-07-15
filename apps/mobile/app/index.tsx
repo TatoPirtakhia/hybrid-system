@@ -1,0 +1,5 @@
+import { router } from 'expo-router';
+import { StyleSheet, Text, View } from 'react-native';
+import { Button } from '../src/components/Controls'; import { Screen } from '../src/components/Screen'; import { colors } from '../src/theme';
+export default function Welcome() { return <Screen><View style={styles.hero}><Text style={styles.mark}>PC</Text><Text style={styles.title}>Prius Companion</Text><Text style={styles.copy}>A calm, offline dashboard for your 2013 Prius C and ELM327 adapter.</Text></View><Button onPress={() => router.push('/safety')}>Get started</Button><Text style={styles.note}>Use only when safely parked. Never operate the app while driving.</Text></Screen>; }
+const styles = StyleSheet.create({ hero: { flex: 1, justifyContent: 'center', gap: 14 }, mark: { alignSelf: 'flex-start', backgroundColor: colors.accent, color: colors.background, fontSize: 24, fontWeight: '900', padding: 14, borderRadius: 16 }, title: { color: colors.text, fontSize: 46, lineHeight: 50, fontWeight: '900', letterSpacing: -1.5 }, copy: { color: colors.muted, fontSize: 20, lineHeight: 29 }, note: { color: colors.muted, textAlign: 'center', lineHeight: 20 } });

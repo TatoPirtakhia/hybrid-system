@@ -1,0 +1,1 @@
+{"name":"@prius/profile-validator","version":"0.1.0","private":true,"scripts":{"start":"tsx src/index.ts","typecheck":"tsc --noEmit"},"dependencies":{"@prius/vehicle-profiles":"workspace:*","@prius/shared":"workspace:*"},"devDependencies":{"tsx":"4.21.0","typescript":"6.0.3"}}

@@ -1,0 +1,38 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Users\tpirtakhia\Documents\Codex\2026-07-15\files-mentioned-by-the-user-technical\outputs\prius-companion\apps\mobile\modules\android-classic-spp\android\src\main\AndroidManifest.xml:1:1-6:12
+INJECTED from C:\Users\tpirtakhia\Documents\Codex\2026-07-15\files-mentioned-by-the-user-technical\outputs\prius-companion\apps\mobile\modules\android-classic-spp\android\src\main\AndroidManifest.xml:1:1-6:12
+	package
+		INJECTED from C:\Users\tpirtakhia\Documents\Codex\2026-07-15\files-mentioned-by-the-user-technical\outputs\prius-companion\apps\mobile\modules\android-classic-spp\android\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Users\tpirtakhia\Documents\Codex\2026-07-15\files-mentioned-by-the-user-technical\outputs\prius-companion\apps\mobile\modules\android-classic-spp\android\src\main\AndroidManifest.xml:1:11-69
+uses-permission#android.permission.BLUETOOTH
+ADDED from C:\Users\tpirtakhia\Documents\Codex\2026-07-15\files-mentioned-by-the-user-technical\outputs\prius-companion\apps\mobile\modules\android-classic-spp\android\src\main\AndroidManifest.xml:2:3-93
+	android:maxSdkVersion
+		ADDED from C:\Users\tpirtakhia\Documents\Codex\2026-07-15\files-mentioned-by-the-user-technical\outputs\prius-companion\apps\mobile\modules\android-classic-spp\android\src\main\AndroidManifest.xml:2:64-90
+	android:name
+		ADDED from C:\Users\tpirtakhia\Documents\Codex\2026-07-15\files-mentioned-by-the-user-technical\outputs\prius-companion\apps\mobile\modules\android-classic-spp\android\src\main\AndroidManifest.xml:2:20-63
+uses-permission#android.permission.BLUETOOTH_ADMIN
+ADDED from C:\Users\tpirtakhia\Documents\Codex\2026-07-15\files-mentioned-by-the-user-technical\outputs\prius-companion\apps\mobile\modules\android-classic-spp\android\src\main\AndroidManifest.xml:3:3-99
+	android:maxSdkVersion
+		ADDED from C:\Users\tpirtakhia\Documents\Codex\2026-07-15\files-mentioned-by-the-user-technical\outputs\prius-companion\apps\mobile\modules\android-classic-spp\android\src\main\AndroidManifest.xml:3:70-96
+	android:name
+		ADDED from C:\Users\tpirtakhia\Documents\Codex\2026-07-15\files-mentioned-by-the-user-technical\outputs\prius-companion\apps\mobile\modules\android-classic-spp\android\src\main\AndroidManifest.xml:3:20-69
+uses-permission#android.permission.BLUETOOTH_SCAN
+ADDED from C:\Users\tpirtakhia\Documents\Codex\2026-07-15\files-mentioned-by-the-user-technical\outputs\prius-companion\apps\mobile\modules\android-classic-spp\android\src\main\AndroidManifest.xml:4:3-118
+	android:usesPermissionFlags
+		ADDED from C:\Users\tpirtakhia\Documents\Codex\2026-07-15\files-mentioned-by-the-user-technical\outputs\prius-companion\apps\mobile\modules\android-classic-spp\android\src\main\AndroidManifest.xml:4:69-115
+	android:name
+		ADDED from C:\Users\tpirtakhia\Documents\Codex\2026-07-15\files-mentioned-by-the-user-technical\outputs\prius-companion\apps\mobile\modules\android-classic-spp\android\src\main\AndroidManifest.xml:4:20-68
+uses-permission#android.permission.BLUETOOTH_CONNECT
+ADDED from C:\Users\tpirtakhia\Documents\Codex\2026-07-15\files-mentioned-by-the-user-technical\outputs\prius-companion\apps\mobile\modules\android-classic-spp\android\src\main\AndroidManifest.xml:5:3-74
+	android:name
+		ADDED from C:\Users\tpirtakhia\Documents\Codex\2026-07-15\files-mentioned-by-the-user-technical\outputs\prius-companion\apps\mobile\modules\android-classic-spp\android\src\main\AndroidManifest.xml:5:20-71
+uses-sdk
+INJECTED from C:\Users\tpirtakhia\Documents\Codex\2026-07-15\files-mentioned-by-the-user-technical\outputs\prius-companion\apps\mobile\modules\android-classic-spp\android\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\tpirtakhia\Documents\Codex\2026-07-15\files-mentioned-by-the-user-technical\outputs\prius-companion\apps\mobile\modules\android-classic-spp\android\src\main\AndroidManifest.xml
+INJECTED from C:\Users\tpirtakhia\Documents\Codex\2026-07-15\files-mentioned-by-the-user-technical\outputs\prius-companion\apps\mobile\modules\android-classic-spp\android\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from C:\Users\tpirtakhia\Documents\Codex\2026-07-15\files-mentioned-by-the-user-technical\outputs\prius-companion\apps\mobile\modules\android-classic-spp\android\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Users\tpirtakhia\Documents\Codex\2026-07-15\files-mentioned-by-the-user-technical\outputs\prius-companion\apps\mobile\modules\android-classic-spp\android\src\main\AndroidManifest.xml

@@ -1,0 +1,1 @@
+{"name":"@prius/log-replayer","version":"0.1.0","private":true,"scripts":{"start":"tsx src/index.ts","typecheck":"tsc --noEmit"},"dependencies":{"@prius/elm327":"workspace:*"},"devDependencies":{"tsx":"4.21.0","typescript":"6.0.3"}}

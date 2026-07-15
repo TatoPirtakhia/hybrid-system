@@ -1,0 +1,1 @@
+{"id":"standard-speed-40-kph","vehicleProfile":"standard-obd-ii","request":"010D","responses":["7E8 03 41 0D 28"],"expected":{"value":40,"unit":"km/h"},"tolerance":0,"verificationDate":"2026-07-15","source":"SAE J1979 formula; synthetic protocol parser fixture, not Toyota-specific"}

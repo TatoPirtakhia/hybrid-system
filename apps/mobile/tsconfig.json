@@ -1,0 +1,1 @@
+{"extends":"../../tsconfig.base.json","compilerOptions":{"jsx":"react-jsx","paths":{"@/*":["./src/*"]}},"include":["app","src","modules","expo-env.d.ts"]}

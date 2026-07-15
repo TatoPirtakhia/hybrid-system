@@ -1,0 +1,12 @@
+{
+  "name": "@prius/mobile",
+  "version": "0.1.0",
+  "private": true,
+  "main": "expo-router/entry",
+  "scripts": { "start": "expo start --dev-client", "android": "expo run:android", "ios": "expo run:ios", "prebuild": "expo prebuild", "typecheck": "tsc --noEmit" },
+  "dependencies": {
+    "@prius/elm327": "workspace:*", "@prius/obd-core": "workspace:*", "@prius/shared": "workspace:*", "@prius/telemetry": "workspace:*", "@prius/vehicle-profiles": "workspace:*", "buffer": "6.0.3",
+    "@tanstack/react-query": "5.101.2", "expo": "57.0.4", "expo-constants": "57.0.3", "expo-dev-client": "57.0.5", "expo-linking": "57.0.2", "expo-router": "57.0.4", "expo-secure-store": "57.0.0", "expo-sqlite": "57.0.0", "expo-status-bar": "57.0.0", "expo-keep-awake": "57.0.0", "react": "19.2.3", "react-hook-form": "7.81.0", "react-native": "0.86.0", "react-native-ble-plx": "3.5.1", "react-native-gesture-handler": "2.32.0", "react-native-reanimated": "4.5.0", "react-native-safe-area-context": "5.7.0", "react-native-screens": "4.25.2", "react-native-tcp-socket": "6.4.1", "zustand": "5.0.14", "zod": "4.4.3"
+  },
+  "devDependencies": { "@types/react": "19.2.17", "typescript": "6.0.3" }
+}
