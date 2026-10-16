@@ -2,7 +2,7 @@ import type { CommandPriority, VerificationStatus } from '@prius/shared';
 
 export interface DecodeDefinition {
   kind: 'BUILT_IN';
-  decoder: 'A' | 'AB_DIV_4' | 'A_MINUS_40' | 'AB_DIV_100' | 'AB_TIMES_005' | 'BITMAP';
+  decoder: 'A' | 'AB' | 'A_PERCENT' | 'AB_DIV_4' | 'A_MINUS_40' | 'AB_DIV_100' | 'AB_TIMES_005' | 'BITMAP';
 }
 
 interface TelemetryBase {

@@ -1,5 +1,5 @@
 export interface FuelAccumulatorState { fuelLitres: number; distanceKm: number; lastTimestamp?: number; source: 'DIRECT' | 'MAF_ESTIMATED' | 'NONE' }
-export interface FuelSample { timestamp: number; speedKph?: number; fuelRateLph?: number; mafGps?: number; equivalenceRatio?: number }
+export interface FuelSample { timestamp: number; speedKph?: number; engineRpm?: number; fuelRateLph?: number; mafGps?: number; equivalenceRatio?: number }
 
 export const initialFuelState = (): FuelAccumulatorState => ({ fuelLitres: 0, distanceKm: 0, source: 'NONE' });
 
@@ -34,7 +34,7 @@ export const kmPerLitre = (l100: number | null): number | null => l100 && l100 >
 export interface TripSnapshot {
   startedAt: number; durationSeconds: number; distanceKm: number; fuelLitresEstimated: number;
   averageLitresPer100Km: number | null; maxSpeed: number; averageSpeed: number; sampleCount: number;
-  adapterDisconnectCount: number;
+  adapterDisconnectCount: number; engineRunningKm: number; engineOffKm: number; unknownPropulsionKm: number;
 }
 
 export class TripAggregator {
@@ -42,9 +42,17 @@ export class TripAggregator {
   private maxSpeed = 0;
   private sampleCount = 0;
   private disconnects = 0;
+  private engineRunningKm = 0;
+  private engineOffKm = 0;
+  private unknownPropulsionKm = 0;
   constructor(private readonly startedAt = Date.now()) {}
   add(sample: FuelSample): void {
+    const previousDistance = this.fuel.distanceKm;
     this.fuel = integrateFuel(this.fuel, sample);
+    const distance = this.fuel.distanceKm - previousDistance;
+    if (!valid(sample.engineRpm, 0, 16384)) this.unknownPropulsionKm += distance;
+    else if (sample.engineRpm! > 0) this.engineRunningKm += distance;
+    else this.engineOffKm += distance;
     this.maxSpeed = Math.max(this.maxSpeed, valid(sample.speedKph, 0, 300) ? sample.speedKph! : 0);
     this.sampleCount += 1;
   }
@@ -54,7 +62,8 @@ export class TripAggregator {
     return { startedAt: this.startedAt, durationSeconds, distanceKm: this.fuel.distanceKm, fuelLitresEstimated: this.fuel.fuelLitres,
       averageLitresPer100Km: litresPer100Km(this.fuel), maxSpeed: this.maxSpeed,
       averageSpeed: durationSeconds > 0 ? this.fuel.distanceKm / (durationSeconds / 3600) : 0,
-      sampleCount: this.sampleCount, adapterDisconnectCount: this.disconnects };
+      sampleCount: this.sampleCount, adapterDisconnectCount: this.disconnects,
+      engineRunningKm: this.engineRunningKm, engineOffKm: this.engineOffKm, unknownPropulsionKm: this.unknownPropulsionKm };
   }
 }
 

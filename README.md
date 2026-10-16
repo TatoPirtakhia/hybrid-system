@@ -78,3 +78,9 @@ See [ARCHITECTURE.md](ARCHITECTURE.md), [SAFETY.md](SAFETY.md), and [TESTING_ON_
 ## Current milestone boundary
 
 BLE probing, configurable Wi-Fi transport and Android Classic native I/O are implemented at code level. The current setup screen exposes Simulator first; production UX for BLE scanning/manual GATT configuration, Wi-Fi forms, permission education, adapter persistence, and full reconnect orchestration remain subsequent product work. Automatic trip recording, ten-second sample batching, trip history, stored-DTC scans and diagnostic persistence are wired for the active adapter. No release should be represented as meeting all Milestones 4–8.
+
+## Battery screen
+
+Standard PID 015B is polled only when advertised by the ECU and displayed as the reported hybrid battery percentage, not measured capacity or health. The simulator advertises PID 0140 and returns 60% for 015B. The battery screen distinguishes ECU supply voltage from HV pack voltage, hides stale measurements after ten seconds, and labels the Toyota factory 144 V / 20-module specification separately from live data. Source: https://techinfo.toyota.com/techInfoPortal/staticcontent/en/techinfo/html/prelogin/docs/priusc.pdf
+
+Individual block voltages, HV current/voltage, temperatures and fan writes still require the real-car verification procedure in PID_VERIFICATION_GUIDE.md. No guessed Toyota request has been enabled.

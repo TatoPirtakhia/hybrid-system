@@ -7,7 +7,6 @@ const unverified = (id: string, label: string, unit: string, pollingIntervalMs: 
 });
 
 const toyotaIntents: UnverifiedTelemetryIntent[] = [
-  unverified('hvBatterySoc', 'HV battery state of charge', '%', 750),
   unverified('hvBatteryVoltage', 'HV battery voltage', 'V', 500),
   unverified('hvBatteryCurrent', 'HV battery current', 'A', 300),
   unverified('hvBatteryTemperatureMax', 'Maximum battery temperature', '°C', 1500),

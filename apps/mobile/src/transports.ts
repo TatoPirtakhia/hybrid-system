@@ -9,7 +9,13 @@ export interface BleGattConfiguration { serviceUuid?: string; writeCharacteristi
 
 export class BleTransport implements ObdTransport {
   readonly type = 'BLE' as const;
-  private manager = new BleManager(); private status: TransportStatus = 'DISCONNECTED'; private device: Device | undefined; private monitor: Subscription | undefined;
+  private manager = new BleManager({
+    restoreStateIdentifier: 'app.priuscompanion.obd',
+    restoreStateFunction: (restored) => {
+      // A new process has no active fan session. Do not resume an old manual command.
+      for (const device of restored?.connectedPeripherals ?? []) void device.cancelConnection().catch(() => undefined);
+    },
+  }); private status: TransportStatus = 'DISCONNECTED'; private device: Device | undefined; private monitor: Subscription | undefined;
   private listeners = new Set<(value: Uint8Array) => void>(); private configuration: BleGattConfiguration = {};
   constructor(configuration?: BleGattConfiguration) { if (configuration) this.configuration = configuration; }
   async scan(): Promise<DiscoveredAdapter[]> {

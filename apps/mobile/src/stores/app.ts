@@ -10,6 +10,9 @@ export const useTelemetryStore = create<TelemetryState>((set) => ({ values: {}, 
 interface SettingsState { safetyAccepted: boolean; keepAwake: boolean; units: 'L_100KM' | 'MPG_US'; setSafetyAccepted: (value: boolean) => void; toggleKeepAwake: () => void }
 export const useSettingsStore = create<SettingsState>((set) => ({ safetyAccepted: false, keepAwake: true, units: 'L_100KM', setSafetyAccepted: (safetyAccepted) => set({ safetyAccepted }), toggleKeepAwake: () => set((s) => ({ keepAwake: !s.keepAwake })) }));
 
-export interface TripSummary { id: string; startedAt: number; durationSeconds: number; distanceKm: number; fuelLitres: number; averageLitresPer100Km: number | null; sampleCount: number }
+export interface TripSummary { id: string; startedAt: number; durationSeconds: number; distanceKm: number; fuelLitres: number; averageLitresPer100Km: number | null; sampleCount: number; engineRunningKm: number; engineOffKm: number; unknownPropulsionKm: number }
 interface TripState { active?: TripSummary | undefined; historyVersion: number; setActive: (active?: TripSummary) => void; historyChanged: () => void }
 export const useTripStore = create<TripState>((set) => ({ historyVersion: 0, setActive: (active) => set({ active }), historyChanged: () => set((s) => ({ historyVersion: s.historyVersion + 1 })) }));
+
+interface FanState { level: number | null; busy: boolean; message: string; set: (value: Partial<FanState>) => void }
+export const useFanStore = create<FanState>((set) => ({ level: null, busy: false, message: 'ხელით მართვა გამორთულია', set: (value) => set(value) }));

@@ -102,15 +102,44 @@ export class Elm327Client {
     this.state = 'DISCONNECTED';
   }
 
-  private execute(command: ScheduledCommand): Promise<CommandResult> {
+  private async execute(command: ScheduledCommand): Promise<CommandResult> {
+    if (!command.header) return this.executeWire(command.command, command.timeoutMs - 50);
+    if (!/^[0-9A-F]{3}$/.test(command.header)) throw new Error('Invalid ECU header');
+    const timeout = Math.max(100, Math.floor(command.timeoutMs / 4));
+    try {
+      const header = await this.executeWire(`ATSH${command.header}`, timeout);
+      if (!parseElmResponse(header.raw).statuses.includes('OK')) throw new Error('Adapter rejected ECU header');
+      if (command.signal?.aborted) throw new Error('Command cancelled');
+      return await this.executeWire(command.command, timeout);
+    } finally {
+      if (this.state === 'READY') {
+        const restored = await this.executeWire('ATSH7DF', timeout);
+        if (!parseElmResponse(restored.raw).statuses.includes('OK')) {
+          this.state = 'ERROR';
+          throw new Error('Unable to restore OBD header; reconnect adapter');
+        }
+      }
+    }
+  }
+
+  private executeWire(command: string, timeoutMs: number): Promise<CommandResult> {
+    if (this.state === 'ERROR' || this.state === 'DISCONNECTED') return Promise.reject(new Error('Reconnect adapter'));
     if (this.pending) return Promise.reject(new Error('Command overlap prevented'));
     return new Promise((resolve, reject) => {
-      this.pending = { command: command.command, startedAt: Date.now(), resolve, reject };
-      const wire = `${command.command.replace(/[\r\n]/g, '')}\r`;
+      const timer = setTimeout(() => {
+        this.pending = undefined;
+        this.state = 'ERROR';
+        this.assembler.reset();
+        reject(new Error('Adapter timed out; reconnect to resynchronize'));
+      }, Math.max(1, timeoutMs));
+      const fail = (error: Error) => { clearTimeout(timer); reject(error); };
+      this.pending = { command, startedAt: Date.now(), resolve: (result) => { clearTimeout(timer); resolve(result); }, reject: fail };
+      const wire = `${command.replace(/[\r\n]/g, '')}\r`;
       this.options.onRawLog?.('OUT', wire);
       void this.transport.write(new TextEncoder().encode(wire)).catch((error: unknown) => {
         this.pending = undefined;
-        reject(error instanceof Error ? error : new Error(String(error)));
+        this.state = 'ERROR';
+        fail(error instanceof Error ? error : new Error(String(error)));
       });
     });
   }
@@ -131,11 +160,15 @@ export class SimulatorTransport implements ObdTransport {
   private status: TransportStatus = 'DISCONNECTED';
   private listeners = new Set<(data: Uint8Array) => void>();
   private scenario: 'CITY' | 'HIGHWAY' | 'SLOW' | 'DTC' = 'CITY';
+  private header = '7DF';
+  private fanLevel = 0;
+  private fanUpdatedAt = 0;
   private tick = 0;
+  private startedAt = Date.now();
 
   setScenario(value: typeof this.scenario): void { this.scenario = value; }
   async scan(): Promise<DiscoveredAdapter[]> { this.status = 'SCANNING'; this.status = 'DISCONNECTED'; return [{ id: 'simulator', name: 'Prius C Simulator', signalStrength: -25 }]; }
-  async connect(): Promise<void> { this.status = 'CONNECTED'; }
+  async connect(): Promise<void> { this.status = 'CONNECTED'; this.startedAt = Date.now(); }
   async disconnect(): Promise<void> { this.status = 'DISCONNECTED'; }
   subscribe(listener: (data: Uint8Array) => void): () => void { this.listeners.add(listener); return () => this.listeners.delete(listener); }
   getStatus(): TransportStatus { return this.status; }
@@ -160,9 +193,17 @@ export class SimulatorTransport implements ObdTransport {
     if (command === 'ATDP') return 'ISO 15765-4 (CAN 11/500)';
     if (command === 'ATDPN') return 'A6';
     if (command === 'ATRV') return `${(13.8 + Math.sin(this.tick / 10) * 0.2).toFixed(1)}V`;
+    if (command.startsWith('ATSH')) { this.header = command.slice(4); return 'OK'; }
     if (command.startsWith('AT')) return 'OK';
+    if (command === '2129' && this.header === '7C0') return '7C8 03 61 29 2B';
+    if (command === '219B' && this.header === '7E2') return `7EA 06 61 9B 01 ${Date.now() - this.fanUpdatedAt < 3000 ? this.fanLevel.toString(16).padStart(2, '0') : '00'} 00 D9`;
+    if (/^3081000[1-6]$/.test(command) && this.header === '7E2') { this.fanLevel = Number(command.at(-1)); this.fanUpdatedAt = Date.now(); return '7EA 02 70 81'; }
     if (command === '0100') return '7E8 06 41 00 BE 3E B8 13';
-    if (command === '0120') return '7E8 06 41 20 80 01 A0 01';
+    if (command === '0120') return '7E8 06 41 20 80 03 A0 01';
+    if (command === '012F') return '7E8 03 41 2F 99';
+    if (command === '011F') { const seconds = Math.min(65535, 120 + Math.floor((Date.now() - this.startedAt) / 1000)); return `7E8 04 41 1F ${(seconds >> 8).toString(16).padStart(2, '0')} ${(seconds & 255).toString(16).padStart(2, '0')}`; }
+    if (command === '0140') return '7E8 06 41 40 40 00 00 24';
+    if (command === '015B') return '7E8 03 41 5B 99';
     if (command === '010D') { const speed = this.scenario === 'HIGHWAY' ? 96 : Math.max(0, Math.round(36 + Math.sin(this.tick / 4) * 30)); return `7E8 03 41 0D ${speed.toString(16).padStart(2, '0')}`; }
     if (command === '010C') { const rpm = Math.round((1200 + Math.sin(this.tick / 3) * 700) * 4); return `7E8 04 41 0C ${(rpm >> 8).toString(16).padStart(2, '0')} ${(rpm & 255).toString(16).padStart(2, '0')}`; }
     if (command === '0105') return '7E8 03 41 05 79';

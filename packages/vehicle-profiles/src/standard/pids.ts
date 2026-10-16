@@ -11,6 +11,9 @@ const standard = (id: string, label: string, unit: string, pid: number, decoder:
 });
 
 export const standardPids: ExecutableTelemetryDefinition[] = [
+  standard('engineRunTime', 'Time since engine start (ECU)', 's', 0x1f, 'AB', 1000, { min: 0, max: 65535 }),
+  standard('fuelLevel', 'Fuel tank level', '%', 0x2f, 'A_PERCENT', 5000, { min: 0, max: 100 }),
+  standard('hvBatterySoc', 'Hybrid battery reported charge (PID 5B)', '%', 0x5b, 'A_PERCENT', 1500, { min: 0, max: 100 }),
   standard('speed', 'Vehicle speed', 'km/h', 0x0d, 'A', 250, { min: 0, max: 255 }),
   standard('rpm', 'Engine RPM', 'rpm', 0x0c, 'AB_DIV_4', 250, { min: 0, max: 16383.75 }),
   standard('coolantTemperature', 'Coolant', '°C', 0x05, 'A_MINUS_40', 1000, { min: -40, max: 215 }),
@@ -22,8 +25,11 @@ export const standardPids: ExecutableTelemetryDefinition[] = [
 export const decodeStandardPid = (definition: ExecutableTelemetryDefinition, bytes: Uint8Array): number => {
   const a = bytes[0];
   if (a === undefined) throw new Error('Missing PID data');
+  const needsTwoBytes = ['AB', 'AB_DIV_4', 'AB_DIV_100', 'AB_TIMES_005', 'BITMAP'].includes(definition.decode.decoder);
+  if (needsTwoBytes && bytes.length < 2) throw new Error('Incomplete PID data');
   const b = bytes[1] ?? 0;
   const value = definition.decode.decoder === 'A' ? a
+    : definition.decode.decoder === 'A_PERCENT' ? a * 100 / 255
     : definition.decode.decoder === 'AB_DIV_4' ? (a * 256 + b) / 4
     : definition.decode.decoder === 'A_MINUS_40' ? a - 40
     : definition.decode.decoder === 'AB_DIV_100' ? (a * 256 + b) / 100

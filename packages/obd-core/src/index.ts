@@ -28,6 +28,8 @@ export interface ScheduledCommand {
   retries?: number;
   signal?: AbortSignal;
   write?: boolean;
+  /** Route this request atomically, then restore the functional OBD header. */
+  header?: string;
 }
 
 export type CommandResult = { raw: string; latencyMs: number };

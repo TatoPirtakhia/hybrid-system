@@ -1,4 +1,5 @@
+// iOS grouped appearance with the system font supplied by React Native.
 export const colors = {
-  background: '#071018', surface: '#101D27', raised: '#182A36', text: '#F4F8FA', muted: '#9CB0BC', accent: '#44D7B6',
-  normal: '#4DD18A', attention: '#F3B33D', warning: '#FF6577', unavailable: '#7A8790', border: '#29404E',
+  background: '#F2F2F7', surface: '#FFFFFF', raised: '#E5E5EA', text: '#1C1C1E', muted: '#636366', accent: '#007AFF',
+  normal: '#248A3D', attention: '#946200', warning: '#D70015', unavailable: '#8E8E93', border: '#D1D1D6', onAccent: '#FFFFFF',
 };
